@@ -9,11 +9,20 @@
 import SwiftUI
 
 struct TodoRowView: View {
-    @Binding var todo: Todo
-    
+    var todo: Todo
+
+    private var dueDateLabel: String? {
+        guard let date = todo.dueDate else { return nil }
+        let formatted = date.formatted(date: .abbreviated, time: .shortened)
+        if !todo.isCompleted && date < .now {
+            return "Overdue: \(formatted)"
+        }
+        return formatted
+    }
+
     var body: some View {
         NavigationLink {
-            TodoDetailView(todo: $todo)
+            TodoDetailView(todo: todo)
         } label: {
             HStack {
                 Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
@@ -29,6 +38,16 @@ struct TodoRowView: View {
                             .foregroundStyle(.gray)
                             .strikethrough(todo.isCompleted)
                     }
+                    if let label = dueDateLabel {
+                        Text(label)
+                            .font(.caption)
+                            .foregroundStyle(todo.isCompleted ? .gray : (todo.dueDate! < .now ? .red : .secondary))
+                    }
+                    if let person = todo.assignedTo {
+                        Text("→ \(person.name)")
+                            .font(.caption)
+                            .foregroundStyle(.blue)
+                    }
                 }
             }
         }
@@ -36,8 +55,9 @@ struct TodoRowView: View {
 }
 
 #Preview {
-    @Previewable @State var todo = Todo(title: "Feed demo cat")
+    let person = Person(name: "Alex")
+    let todo = Todo(title: "Feed demo cat", dueDate: .now, assignedTo: person)
     List {
-        TodoRowView(todo: $todo)
+        TodoRowView(todo: todo)
     }
 }

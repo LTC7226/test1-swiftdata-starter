@@ -6,13 +6,15 @@
 //
 
 extension Todo {
-    
-    static let sampleTodos = [
-        Todo(title: "Feed the cat", isCompleted: true),
-        Todo(title: "Play with cat", subtitle: "Use his favourite String!"),
-        Todo(title: "Get allergies"),
-        Todo(title: "Run away from cat"),
-        Todo(title: "Get a new cat")
-    ]
-    
+
+    static var sampleTodos: [Todo] {
+        [
+            Todo(title: "Feed the cat", isCompleted: true, order: 0),
+            Todo(title: "Play with cat", subtitle: "Use his favourite String!", order: 1),
+            Todo(title: "Get allergies", order: 2),
+            Todo(title: "Run away from cat", order: 3),
+            Todo(title: "Get a new cat", order: 4)
+        ]
+    }
+
 }

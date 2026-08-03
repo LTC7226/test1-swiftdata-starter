@@ -6,15 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HowManyMoreView: View {
 
-    @State var todos: [Todo] = []
-    
+    @Query var todos: [Todo]
+
     var numTodosLeft: Int {
         todos.filter { !$0.isCompleted }.count
     }
-    
+
     var numTodosDone: Int {
         todos.filter { $0.isCompleted }.count
     }
@@ -38,4 +39,5 @@ struct HowManyMoreView: View {
 
 #Preview {
     HowManyMoreView()
+        .modelContainer(for: Todo.self, inMemory: true)
 }
